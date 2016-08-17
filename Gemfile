@@ -3,8 +3,6 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 
-gem 'rails-api'
-
 gem 'spring', :group => :development
 
 
@@ -26,3 +24,6 @@ gem 'pg'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem 'listen'
+
