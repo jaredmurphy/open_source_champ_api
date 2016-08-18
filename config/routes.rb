@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  resources :losers
-  resources :winners
-  resources :battles
-  resources :players
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  constraints subdomain: 'api' do
+    scope module: 'api' do
+      namespace :v1 do
+        resources :players, only: [:index, :show, :new, :create, :edit, :update]
+        resources :battles, only: [:index, :show, :new, :create]
+      end
+    end
+  end
 end
