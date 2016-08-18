@@ -10,13 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160818213546) do
+ActiveRecord::Schema.define(version: 20160818223225) do
 
   create_table "battles", force: :cascade do |t|
     t.integer  "winner_score"
     t.integer  "loser_score"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "losers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "player_id"
+    t.integer  "battle_id"
+    t.index ["battle_id"], name: "index_losers_on_battle_id"
+    t.index ["player_id"], name: "index_losers_on_player_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -33,6 +42,15 @@ ActiveRecord::Schema.define(version: 20160818213546) do
     t.string   "company"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+  end
+
+  create_table "winners", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "battle_id"
+    t.integer  "player_id"
+    t.index ["battle_id"], name: "index_winners_on_battle_id"
+    t.index ["player_id"], name: "index_winners_on_player_id"
   end
 
 end
