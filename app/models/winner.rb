@@ -1,4 +1,4 @@
 class Winner < ApplicationRecord
-  has_one :battle
-  has_one :player
+  belongs_to :battle
+  belongs_to :player
 end

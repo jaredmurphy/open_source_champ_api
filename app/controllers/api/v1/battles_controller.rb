@@ -3,11 +3,17 @@ class Api::V1::BattlesController < ApplicationController
 
   # GET /battles
   def index
-    @battles = Battle.all
-    # @battles = "SELECT * FROM battles, players, winners, losers WHERE (player.id = winner.player_id AND winner.battle_id = battle.id) OR (player.id = loser.player_id AND loser.battle_id = battle.id)"
-    # @battles = Battle.joins(:player, :winner, :loser)
-    # .where("battle.id = winner.battle_id OR battle.id = loser.battle_id AND winner.player_id = player.id OR loser.player_id = player.id")
-    render json: @battles
+    #query = "SELECT * FROM battles, players, winners, losers WHERE (player.id = winner.player_id AND winner.battle_id = battle.id) OR (player.id = loser.player_id AND loser.battle_id = battle.id)"
+    #@battles = ActiveRecord::Base.connection.execute(query)
+    # @battles = Battle.joins(:winners, :losers)
+    # .where("battle.id = winner.battle_id OR battle.id = loser.battle_id")
+    # .joins(:player).where("winner.player_id = player.id OR loser.player_id = player.id")
+    @winners = Winner.all
+    @losers = Loser.all
+    @players = Player.all
+    @battles = Battle.joins(:losers, :winners)
+    .where("battle.id = winner.battle_id OR battle.id = winner.battle_id")
+    render json: @battle_data
   end
 
   # GET /battles/1

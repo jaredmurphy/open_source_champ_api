@@ -1,4 +1,7 @@
 class Battle < ApplicationRecord
-  belongs_to :winner
-  belongs_to :loser
+  has_one :winner
+  has_one :loser
+
+  has_one :player, through: :winner
+  has_one :player, through: :loser
 end
