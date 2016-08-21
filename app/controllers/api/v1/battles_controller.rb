@@ -11,9 +11,9 @@ class Api::V1::BattlesController < ApplicationController
     @winners = Winner.all
     @losers = Loser.all
     @players = Player.all
-    @battles = Battle.joins(:losers, :winners)
-    .where("battle.id = winner.battle_id OR battle.id = winner.battle_id")
-    render json: @battle_data
+    @battles = Battle.select("*").joins(:losers)
+    #.where("battle.id = loser.battle_id") #OR battle.id = winner.battle_id")
+    render json: @battles
   end
 
   # GET /battles/1

@@ -1,4 +1,5 @@
 class Battle < ApplicationRecord
+  
   has_one :winner
   has_one :loser
 
