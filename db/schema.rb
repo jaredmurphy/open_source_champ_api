@@ -10,22 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160824153954) do
+ActiveRecord::Schema.define(version: 20160825180149) do
 
   create_table "battles", force: :cascade do |t|
     t.integer  "winner_score"
     t.integer  "loser_score"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-  end
-
-  create_table "losers", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "player_id"
-    t.integer  "battle_id"
-    t.index ["battle_id"], name: "index_losers_on_battle_id"
-    t.index ["player_id"], name: "index_losers_on_player_id"
+    t.integer  "winner_id"
+    t.integer  "loser_id"
+    t.index ["loser_id"], name: "index_battles_on_loser_id"
+    t.index ["winner_id"], name: "index_battles_on_winner_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -45,15 +40,6 @@ ActiveRecord::Schema.define(version: 20160824153954) do
     t.string   "github_url"
     t.string   "kind"
     t.string   "bio"
-  end
-
-  create_table "winners", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "battle_id"
-    t.integer  "player_id"
-    t.index ["battle_id"], name: "index_winners_on_battle_id"
-    t.index ["player_id"], name: "index_winners_on_player_id"
   end
 
 end
