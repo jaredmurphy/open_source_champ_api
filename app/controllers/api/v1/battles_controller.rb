@@ -3,15 +3,13 @@ class Api::V1::BattlesController < ApplicationController
 
   # GET /battles
   def index
-    # Company.joins(:price_movements,:goods_movements).where("goods_movement.date = price_movement.date")
-    #@battles = Battle.joins(:winner, :loser).where("winners.battle_id = battles.id OR losers.battle_id = battles.id")
-    @battles = Battle.joins(:winner)
-    byebug
+    @battles = Battle.all.with_results
     render json: @battles
   end
 
-  # GET /battles/1
+  # GET /battles/:id
   def show
+    @battle = Battle.find_by(id: params[:id])
     render json: @battle
   end
 
