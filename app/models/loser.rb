@@ -1,4 +1,4 @@
 class Loser < ApplicationRecord
-  belongs_to :battle
-  belongs_to :player
+  has_one :battle
+  has_one :player
 end
