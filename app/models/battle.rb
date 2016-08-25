@@ -1,8 +1,9 @@
 class Battle < ApplicationRecord
+  belongs_to :winner,
+    class_name: "Player",
+    foreign_key: "winner_id"
 
-  has_one :winner
-  has_one :loser
-
-  # has_one :player, through: :winner
-  # has_one :player, through: :loser
+  belongs_to :loser,
+    class_name: "Player",
+    foreign_key: "loser_id"
 end
