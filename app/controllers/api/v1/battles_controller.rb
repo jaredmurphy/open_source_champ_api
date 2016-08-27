@@ -1,5 +1,5 @@
 class Api::V1::BattlesController < ApplicationController
-  before_action :set_battle, only: [:show, :update, :destroy]
+  #before_action :set_battle, only: [:show, :update, :destroy]
 
   # GET /battles
   def index
@@ -10,7 +10,11 @@ class Api::V1::BattlesController < ApplicationController
   # GET /battles/:id
   def show
     @battle = Battle.find_by(id: params[:id])
-    render json: @battle
+    if @battle.nil?
+      not_found   
+    else 
+      render json: @battle
+    end
   end
 
   # POST /battles
@@ -39,10 +43,14 @@ class Api::V1::BattlesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_battle
-      @battle = Battle.find(params[:id])
+    def not_found
+      status 404
+      { error: "Not Found" }.to_json
     end
+
+    #def set_battle
+      #@battle = Battle.find(params[:id])
+    #end
 
     # Only allow a trusted parameter "white list" through.
     def battle_params

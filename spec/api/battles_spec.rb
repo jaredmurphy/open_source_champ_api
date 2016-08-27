@@ -19,6 +19,17 @@ describe "Battles API" do
       get "/api/v1/battles"
       expect(response).to be_success
     end
+
+    it "responds with battle data" do
+      get "/api/v1/battles"
+      data = JSON.parse(response.body)
+
+      expect(data).to_not be_empty
+
+      data.each do |battle|
+        expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
+      end
+    end
   end
 
   describe "GET /battles/:id" do
@@ -32,10 +43,15 @@ describe "Battles API" do
     end
 
     context "when the id is invalid" do
-      # @TODO
-      xit "returns a 404 Not Found" do
+      it "returns a 404 status" do
         get "/api/v1/battles/9000"
         expect(response.status).to eq 404
+      end
+
+      it "responds with message of Not Found" do 
+        get "/api/v1/battles/9000"
+        message = json["errors"].first["detail"]
+        expect(message).to eq "Not Found"
       end
     end
   end
