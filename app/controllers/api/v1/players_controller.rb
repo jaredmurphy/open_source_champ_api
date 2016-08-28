@@ -1,5 +1,5 @@
 class Api::V1::PlayersController < ApplicationController
-  before_action :set_player, only: [:show, :update, :destroy]
+  #before_action :set_player, only: [:show, :update, :destroy]
 
   # GET /players
   def index
@@ -8,9 +8,15 @@ class Api::V1::PlayersController < ApplicationController
     render json: @players
   end
 
-  # GET /players/1
+  # GET /players/:id
   def show
-    render json: @player
+    @player = Player.find_by(id: params[:id])
+
+    if @player.nil?
+      not_found   
+    else 
+      render json: @player
+    end
   end
 
   # POST /players
@@ -42,6 +48,10 @@ class Api::V1::PlayersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_player
       @player = Player.find(params[:id])
+    end
+
+    def not_found
+      render json: { :error => "Not Found" }, :status => 404
     end
 
     # Only allow a trusted parameter "white list" through.
