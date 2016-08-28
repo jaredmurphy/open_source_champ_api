@@ -44,13 +44,12 @@ class Api::V1::BattlesController < ApplicationController
 
   private
     def not_found
-      status 404
-      { error: "Not Found" }.to_json
+      render json: { :error => "Not Found" }, :status => 404
     end
 
-    #def set_battle
-      #@battle = Battle.find(params[:id])
-    #end
+    def set_battle
+      @battle = Battle.find(params[:id])
+    end
 
     # Only allow a trusted parameter "white list" through.
     def battle_params

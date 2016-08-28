@@ -50,7 +50,7 @@ describe "Battles API" do
 
       it "responds with message of Not Found" do 
         get "/api/v1/battles/9000"
-        message = json["errors"].first["detail"]
+        message = JSON.parse(response.body)["error"]
         expect(message).to eq "Not Found"
       end
     end
