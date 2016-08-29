@@ -43,9 +43,6 @@ class Api::V1::BattlesController < ApplicationController
   end
 
   private
-    def not_found
-      render json: { :error => "Not Found" }, :status => 404
-    end
 
     def set_battle
       @battle = Battle.find(params[:id])

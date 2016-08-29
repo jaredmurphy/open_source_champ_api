@@ -50,9 +50,6 @@ class Api::V1::PlayersController < ApplicationController
       @player = Player.find(params[:id])
     end
 
-    def not_found
-      render json: { :error => "Not Found" }, :status => 404
-    end
 
     # Only allow a trusted parameter "white list" through.
     def player_params
