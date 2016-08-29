@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def parse_request
+   @json = JSON.parse(request.body.read)
+  end
+
   def not_found
     render json: { :error => "Not Found" }, :status => 404
   end

@@ -28,20 +28,6 @@ class Api::V1::BattlesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /battles/1
-  def update
-    if @battle.update(battle_params)
-      render json: @battle
-    else
-      render json: @battle.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /battles/1
-  def destroy
-    @battle.destroy
-  end
-
   private
 
     def set_battle
