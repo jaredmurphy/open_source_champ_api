@@ -74,7 +74,7 @@ describe "Players API" do
   describe "POST /players" do
     context "when params are provided correctly" do
       it "returns a 200 OK" do
-        post "/api/v1/players", Player.last
+        post "/api/v1/players", Player
         expect(response).to be_success
       end
     end
