@@ -59,9 +59,8 @@ describe "Battles API" do
   describe "POST /battles/create" do
     context "when information is provided correctly"
       it "returns a 200 OK" do
-        battle = Battle.last
-        params = {:winner_score => "#{battle.winner_score}", :loser_score => "#{battle.loser_score}" }
-        post "/api/v1/battles", :battle => params.to_json
+        battle_params = {:winner_score => 30, :loser_score => 3, :winner_id => winner.id, :loser_id => loser.id }
+        post "/api/v1/battles", as: :json, params: { battle: battle_params }
         expect(response).to be_success
       end
   end
