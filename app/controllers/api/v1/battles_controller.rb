@@ -25,7 +25,6 @@ class Api::V1::BattlesController < ApplicationController
   # POST /battles
   def create
     @battle = Battle.create(battle_params)
-    binding.pry
 
     if @battle.save
       render json: @battle, status: :created
@@ -48,8 +47,6 @@ class Api::V1::BattlesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def battle_params
-      binding.pry
-      #params = params.to_h
       params.require(:battle).permit(:winner_score, :loser_score, :winner_id, :loser_id)
     end
 end

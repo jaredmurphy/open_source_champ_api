@@ -74,7 +74,7 @@ describe "Players API" do
   describe "POST /players" do
     context "when params are provided correctly" do
       it "returns a 200 OK" do
-        player_params = { :login => "Shit mother fucker"  }
+        player_params = { :login => "Shit fuck mother fucker"  }
         post "/api/v1/players", as: :json, params: { player: player_params }
         expect(response).to be_success
       end

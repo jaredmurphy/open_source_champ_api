@@ -1,5 +1,7 @@
 class Api::V1::PlayersController < ApplicationController
   #before_action :set_player, only: [:show, :update, :destroy]
+  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
+  wrap_parameters format: [:json]
 
   # GET /players
   def index
