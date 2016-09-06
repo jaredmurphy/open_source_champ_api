@@ -1,6 +1,7 @@
 class Api::V1::PlayersController < ApplicationController
   #before_action :set_player, only: [:show, :update, :destroy]
-  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
+  #protect_from_forgery with: :null_session
+  #protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
   wrap_parameters format: [:json]
 
   # GET /players
@@ -12,7 +13,7 @@ class Api::V1::PlayersController < ApplicationController
 
   # GET /players/:id
   def show
-    @player = Player.find_by(id: params[:id])
+    @player = Player.find_by(id: params[:id]) || Player.find_by(login: params[:id])
 
     if @player.nil?
       not_found   

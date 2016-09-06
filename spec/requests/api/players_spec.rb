@@ -57,6 +57,14 @@ describe "Players API" do
       end
     end
 
+    context "when the login is passed" do
+      it "returns a 200 Ok" do
+        player = Player.first
+        get "/api/v1/players/#{player.login}"
+        expect(response).to be_success
+      end
+    end
+
     context "when the id is invalid" do
       it "returns a 404 status" do
         get "/api/v1/players/9000"
