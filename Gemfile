@@ -26,7 +26,7 @@ gem 'rack-attack'
 #gem 'active_model_serializers'
 
 gem 'pry'
-
+gem 'httparty'
 gem "omniauth-github"
 
 group :development, :test do

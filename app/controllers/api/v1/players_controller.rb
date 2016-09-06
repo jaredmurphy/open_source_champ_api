@@ -33,8 +33,11 @@ class Api::V1::PlayersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /players/1
+  # PATCH/PUT /players/:id
   def update
+    #root_url = "https://api.github.com/users/"
+    #github_data = HTTPARTY.get("#{root_url}#{player_params['login']}?client_id=#{ENV['GITHUB_CLIENT_ID']}&client_secret=#{ENV['GITHUB_CLIENT_SECRET']}")
+
     if @player.update(player_params)
       render json: @player
     else

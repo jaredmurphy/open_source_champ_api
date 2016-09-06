@@ -4,7 +4,7 @@ require "rails_helper"
 describe "Players API" do
   before(:each) do
     Player.create(
-      login: "player1",
+      login: "schmartmann",
       followers: 1,
       public_repos: 2,
       github_url: "www.github.com/player1"
@@ -80,5 +80,22 @@ describe "Players API" do
     end
   end
 
-end
+  describe "PUT /players/:id" do
+    context "when user currently exists" do
+      it "returns a 200 OK" do
+        rand_num = rand(10)
+        player_params = { :login => "schmartmann", followers: rand_num  }
+        post "/api/v1/players", as: :json, params: { player: player_params }
+        expect(response).to be_success
+      end
 
+      it "updates info correctly" do
+        rand_num = rand(10)
+        player_params = { :login => "schmartmann", followers: rand_num  }
+        post "/api/v1/players", as: :json, params: { player: player_params }
+        data = JSON.parse(response.body)
+        expect(data["followers"]).to eq(rand_num)
+      end
+    end
+  end
+end 
