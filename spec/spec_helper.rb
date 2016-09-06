@@ -28,4 +28,26 @@ RSpec.configure do |config|
         })
     end
   end
+
+  def check_player_keys player
+    expect(player.keys).to contain_exactly(
+      "id", 
+      "github_id",
+      "login", 
+      "avatar_url",
+      "blog",
+      "github_created_at",
+      "followers",
+      "following",
+      "public_repos",
+      "public_gists",
+      "location",
+      "company",
+      "created_at",
+      "updated_at",
+      "github_url",
+      "kind",
+      "bio"
+    )
+ end
 end

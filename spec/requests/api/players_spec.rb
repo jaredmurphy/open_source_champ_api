@@ -24,26 +24,8 @@ describe "Players API" do
       expect(data).to_not be_empty
 
       data.each do |player|
-        expect(player.keys).to contain_exactly(
-          "id", 
-          "github_id",
-          "login", 
-          "avatar_url",
-          "blog",
-          "github_created_at",
-          "followers",
-          "following",
-          "public_repos",
-          "public_gists",
-          "location",
-          "company",
-          "created_at",
-          "updated_at",
-          "github_url",
-          "kind",
-          "bio"
-        )
-      end
+        check_player_keys player
+      end 
     end
   end
 
@@ -54,6 +36,10 @@ describe "Players API" do
 
         get "/api/v1/players/#{player.id}"
         expect(response).to be_success
+
+        data = JSON.parse(response.body)
+        expect(data).to_not be_empty
+        check_player_keys data
       end
     end
 
@@ -62,6 +48,11 @@ describe "Players API" do
         player = Player.first
         get "/api/v1/players/#{player.login}"
         expect(response).to be_success
+
+        data = JSON.parse(response.body)
+        expect(data).to_not be_empty
+
+        check_player_keys data
       end
     end
 
