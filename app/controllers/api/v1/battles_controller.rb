@@ -16,15 +16,30 @@ class Api::V1::BattlesController < ApplicationController
   def show
     @battle = Battle.find_by(id: params[:id])
     if @battle.nil?
-      not_found   
-    else 
+      not_found
+    else
       render json: @battle
     end
   end
 
   # POST /battles
   def create
-    @battle = Battle.create(battle_params)
+    player_one = params[:players][:player_one]
+    player_two = params[:players][:player_two]
+
+
+    player_one_exists = Player.where(login: player_one).first_or_create
+    player_one_id = player_one_exists[:id]
+
+    player_two_exists = Player.where(login: player_two).first_or_create
+    player_two_id = player_two_exists[:id]
+
+    game = generate_winner player_one, player_two
+    winner_id = 
+
+    @battle = Battle.create({
+      :winner_id => game
+    })
 
     if @battle.save
       render json: @battle, status: :created
@@ -47,6 +62,6 @@ class Api::V1::BattlesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def battle_params
-      params.require(:battle).permit(:winner_score, :loser_score, :winner_id, :loser_id)
+      params.require(:players).permit(:player_one, :player_two)
     end
 end

@@ -48,7 +48,7 @@ describe "Battles API" do
         expect(response.status).to eq 404
       end
 
-      it "responds with message of Not Found" do 
+      it "responds with message of Not Found" do
         get "/api/v1/battles/9000"
         message = JSON.parse(response.body)["error"]
         expect(message).to eq "Not Found"

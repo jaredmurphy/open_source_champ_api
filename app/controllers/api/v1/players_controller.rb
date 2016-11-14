@@ -13,11 +13,12 @@ class Api::V1::PlayersController < ApplicationController
 
   # GET /players/:id
   def show
-    @player = Player.find_by(id: params[:id]) || Player.find_by(login: params[:id])
+    @player = Player.find_by(login: params[:login])
 
     if @player.nil?
-      not_found   
-    else 
+      response = hit_github_for_player(params[:login])
+      not_found
+    else
       render json: @player
     end
   end
