@@ -24,6 +24,7 @@ class Api::V1::BattlesController < ApplicationController
 
   # POST /battles
   def create
+
     player_one = params[:players][:player_one]
     player_two = params[:players][:player_two]
 
@@ -35,17 +36,14 @@ class Api::V1::BattlesController < ApplicationController
     player_two_id = player_two_exists[:id]
 
     game = generate_winner player_one, player_two
-    winner_id = 
+    
+    #batte.create
 
-    @battle = Battle.create({
-      :winner_id => game
-    })
-
-    if @battle.save
-      render json: @battle, status: :created
-    else
-      render json: @battle.errors, status: :unprocessable_entity
-    end
+    #if @battle.save
+      render json: game, status: :created
+   # else
+    #  render json: @battle.errors, status: :unprocessable_entity
+   # end
   end
 
   private

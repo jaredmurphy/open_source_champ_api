@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     @current_user ||= ApiUser.find(session[:api_user_id]) if session[:api_user_id]
   end
 
-  def hit_github_for_player
+  def hit_github_for_player player
     root_url = "https://api.github.com/users/"
     github_id = ENV['GITHUB_ID']
     github_secret = ENV['GITHUB_SECRET']
