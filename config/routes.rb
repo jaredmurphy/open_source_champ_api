@@ -13,7 +13,7 @@ Rails.application.routes.draw do
         put '/players/:id', to: 'players#update'
         post '/players/', to: 'players#create'
 
-        get '/search?login=:username', to: 'players#search'
+        get '/search', to: 'players#search'
 
         #battles
         resources :battles, only: [:index, :show, :new, :create]

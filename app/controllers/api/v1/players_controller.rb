@@ -15,17 +15,44 @@ class Api::V1::PlayersController < ApplicationController
     @player = Player.find_by(id: params[:id])
 
     if @player.nil?
-      # response = hit_github_for_player(params[:login])
       not_found
     else
       render json: @player
     end
   end
 
+  # GET /search?login=
   def search
-    byebug
-    @players = Player.all
-    render json: @players
+    player= Player.find_by(:login => params[:login])
+
+    if player
+      render json: player
+    else
+      response = hit_github_for_player params[:login]
+
+      if response["message"] && response["message"] == "Not Found"
+        not_found
+      else
+        create_player = Player.create(
+          :login => response["login"],
+          :avatar_url => response["avatar_url"],
+          :blog => response["blog"],
+          :github_created_at => response["created_at"],
+          :followers => response["followers"],
+          :following => response["following"],
+          :public_repos => response["public_repos"],
+          :public_gists => response["public_gists"],
+          :location => response["location"],
+          :company => response["company"],
+          :kind => response["type"],
+          :github_id => response["id"]
+        )
+
+        new_player = Player.find_by :login => response["login"]
+        render json: new_player, status: :created
+      end
+    end
+
   end
 
   # POST /players

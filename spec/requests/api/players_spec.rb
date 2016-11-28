@@ -45,19 +45,6 @@ describe "Players API" do
       end
     end
 
-    # context "when the login is passed" do
-    #   it "returns a 200 Ok" do
-    #     player = Player.first
-    #     get "/api/v1/players/#{player.login}"
-    #     expect(response).to be_success
-
-    #     data = JSON.parse(response.body)
-    #     expect(data).to_not be_empty
-
-    #     check_player_keys data
-    #   end
-    # end
-
     context "when the id is invalid" do
       it "returns a 404 status" do
         get "/api/v1/players/99999999999999999999999999999999999999999"
@@ -109,6 +96,60 @@ describe "Players API" do
         post "/api/v1/players", as: :json, params: { player: player_params }
         message = JSON.parse(response.body)["error"]
         expect(message).to eq "That user already exists"
+      end
+    end
+  end
+
+  describe "GET /search/:login" do
+    context "when login does currently exists in db" do
+      it "returns a 200 OK" do
+        player_login = Player.first.login
+        get "/api/v1/search?login=#{player_login}"
+        expect(response).to be_success
+      end
+
+      it "responds with players data" do
+        player_login = Player.first.login
+        get "/api/v1/search?login=#{player_login}"
+        data = JSON.parse(response.body)
+
+        expect(data).to_not be_empty
+        check_player_keys data
+      end
+    end
+
+    context "when login exists on github but not in db" do
+      it "returns a 200 OK" do
+        player_login = "heidipowers"
+        get "/api/v1/search?login=#{player_login}"
+
+        expect(response).to be_success
+      end
+
+      it "responds with new player data" do
+        player_login = "heidipowers"
+        get "/api/v1/search?login=#{player_login}"
+        data = JSON.parse(response.body)
+
+        expect(data).to_not be_empty
+        check_player_keys data
+      end
+    end
+
+    context "when login does not exists on github or in db" do
+      it "returns a 404 not found" do
+        player_login = SecureRandom.urlsafe_base64
+        get "/api/v1/search?login=#{player_login}"
+        expect(response.status).to eq 404
+      end
+
+      it "responds with message not found" do
+        player_login = SecureRandom.urlsafe_base64
+        get "/api/v1/search?login=#{player_login}"
+        data = JSON.parse(response.body)
+
+        message = JSON.parse(response.body)["error"]
+        expect(message).to eq "Not Found"
       end
     end
   end
