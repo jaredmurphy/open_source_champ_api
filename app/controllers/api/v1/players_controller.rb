@@ -7,20 +7,25 @@ class Api::V1::PlayersController < ApplicationController
   # GET /players
   def index
     @players = Player.all
-
     render json: @players
   end
 
   # GET /players/:id
   def show
-    @player = Player.find_by(login: params[:login])
+    @player = Player.find_by(id: params[:id])
 
     if @player.nil?
-      response = hit_github_for_player(params[:login])
+      # response = hit_github_for_player(params[:login])
       not_found
     else
       render json: @player
     end
+  end
+
+  def search
+    byebug
+    @players = Player.all
+    render json: @players
   end
 
   # POST /players
@@ -30,15 +35,13 @@ class Api::V1::PlayersController < ApplicationController
     if @player.save
       render json: @player, status: :created
     else
-      render json: @player.errors, status: :unprocessable_entity
+      render json: {:error => "That user already exists", status: :unprocessable_entity}
     end
   end
 
   # PATCH/PUT /players/:id
   def update
-    #root_url = "https://api.github.com/users/"
-    #github_data = HTTPARTY.get("#{root_url}#{player_params['login']}?client_id=#{ENV['GITHUB_CLIENT_ID']}&client_secret=#{ENV['GITHUB_CLIENT_SECRET']}")
-
+    @player = Player.find_by(id: params[:player][:id])
     if @player.update(player_params)
       render json: @player
     else

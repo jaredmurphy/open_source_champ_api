@@ -29,13 +29,14 @@ class Api::V1::BattlesController < ApplicationController
     player_two = params[:players][:player_two]
 
 
-    player_one_exists = Player.where(login: player_one).first_or_create
+    player_one_exists = Player.where(login: player_one)
     player_one_id = player_one_exists[:id]
 
-    player_two_exists = Player.where(login: player_two).first_or_create
+    player_two_exists = Player.where(login: player_two)
     player_two_id = player_two_exists[:id]
 
     game = generate_winner player_one, player_two
+    byebug
     
     #batte.create
 
