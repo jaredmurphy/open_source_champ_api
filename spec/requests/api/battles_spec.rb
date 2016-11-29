@@ -3,8 +3,22 @@ require "rails_helper"
 
 describe "Battles API" do
   before(:each) do
-    @player_one = Player.create(login: "johnrbell", avatar_url: "some_img.jpg")
-    @player_two = Player.create(login: "gittheking", avatar_url: "some_img.jpg")
+    @player_one = Player.create(
+      login: "johnrbell",
+      avatar_url: "some_img.jpg",
+      followers: 1,
+      following: 2,
+      public_repos: 3,
+      public_gists: 4
+    )
+    @player_two = Player.create(
+      login: "gittheking",
+      avatar_url: "some_img.jpg",
+      followers: 5,
+      following: 6,
+      public_repos: 7,
+      public_gists: 8
+    )
 
     @battle = Battle.create(
       winner_score: 10,
@@ -59,9 +73,18 @@ describe "Battles API" do
   describe "POST /battles/" do
     context "when information is provided correctly"
       it "returns a 200 OK" do
-       battle_params = {:player_one => "gittheking", :player_two => "johnrbell"}
-       post "/api/v1/battles", as: :json, params: { players: battle_params }
-       expect(response).to be_success
+        battle_params = {:player_one => Player.first.id, :player_two => Player.second.id}
+        post "/api/v1/battles", as: :json, params: { players: battle_params }
+        expect(response).to be_success
+      end
+
+      it "responds with battle data" do
+        battle_params = {:player_one => Player.first.id, :player_two => Player.second.id}
+        post "/api/v1/battles", as: :json, params: { players: battle_params }
+        data = JSON.parse(response.body)
+
+        expect(data).to_not be_empty
+        expect(data.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
       end
   end
 end
