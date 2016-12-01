@@ -28,7 +28,7 @@ class Api::V1::PlayersController < ApplicationController
     if player
       render json: player
     else
-      response = hit_github_for_player {login: params[:login]}
+      response = hit_github_for_player({login: params[:login]})
 
       if response["message"] && response["message"] == "Not Found"
         not_found

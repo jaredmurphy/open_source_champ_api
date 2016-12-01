@@ -3,7 +3,7 @@ class Api::V1::BattlesController < ApplicationController
 
   #protect_from_forgery
   #skip_before_action :verify_authenticity_token, if: :json_request?
-  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
+  # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
   wrap_parameters format: [:json]
 
   # GET /battles
@@ -24,7 +24,6 @@ class Api::V1::BattlesController < ApplicationController
 
   # POST /battles
   def create
-
     player_one = Player.find(params[:players][:player_one])
     player_two = Player.find(params[:players][:player_two])
 
