@@ -12,6 +12,6 @@ test:
 
 production:
   adapter: postgresql
-  database: open_source_champion_api_development
+  database: ENV['DATABASE_URL']
   pool: 5
   timeout: 500
