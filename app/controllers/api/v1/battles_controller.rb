@@ -1,9 +1,6 @@
 class Api::V1::BattlesController < ApplicationController
-  #before_action :set_battle, only: [:show, :update, :destroy]
-
-  #protect_from_forgery
-  #skip_before_action :verify_authenticity_token, if: :json_request?
-  # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
+  protect_from_forgery
+  skip_before_action :verify_authenticity_token, if: :json_request?
   wrap_parameters format: [:json]
 
   # GET /battles
@@ -44,19 +41,13 @@ class Api::V1::BattlesController < ApplicationController
   end
 
   private
-
-    def set_battle
-      @battle = Battle.find(params[:id])
-    end
-
-    def deserialized_params
-      ActionController::Parameters.new(
-        ActiveModelSerializers::Deserialization.jsonapi_parse!(params)
-      )
-    end
-
     # Only allow a trusted parameter "white list" through.
     def battle_params
       params.require(:players).permit(:player_one, :player_two)
     end
+
+    # verify json request
+    def json_request?
+    request.format.json?
+  end
 end

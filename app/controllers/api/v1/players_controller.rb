@@ -1,7 +1,4 @@
 class Api::V1::PlayersController < ApplicationController
-  #before_action :set_player, only: [:show, :update, :destroy]
-  #protect_from_forgery with: :null_session
-  #protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.include? 'application/json' }
   wrap_parameters format: [:json]
 
   # GET /players
@@ -77,12 +74,6 @@ class Api::V1::PlayersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_player
-      @player = Player.find(params[:id])
-    end
-
-
     # Only allow a trusted parameter "white list" through.
     def player_params
       params.require(:player).permit(:github_id, :login, :avatar_url, :blog, :github_created_at, :followers, :following, :public_repos, :public_gists, :location, :company)
