@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20160828170519) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "api_users", force: :cascade do |t|
     t.string   "provider"
     t.string   "uid"
@@ -27,8 +30,8 @@ ActiveRecord::Schema.define(version: 20160828170519) do
     t.datetime "updated_at",   null: false
     t.integer  "winner_id"
     t.integer  "loser_id"
-    t.index ["loser_id"], name: "index_battles_on_loser_id"
-    t.index ["winner_id"], name: "index_battles_on_winner_id"
+    t.index ["loser_id"], name: "index_battles_on_loser_id", using: :btree
+    t.index ["winner_id"], name: "index_battles_on_winner_id", using: :btree
   end
 
   create_table "players", force: :cascade do |t|
