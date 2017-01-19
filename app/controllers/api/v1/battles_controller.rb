@@ -1,5 +1,7 @@
 class Api::V1::BattlesController < ApplicationController
   #skip_before_action :verify_authenticity_token, if: :json_request?
+  protect_from_forgery with: :null_session
+  skip_before_filter  :verify_authenticity_token
   wrap_parameters format: [:json]
 
   # GET /battles
@@ -11,13 +13,13 @@ class Api::V1::BattlesController < ApplicationController
   # GET /battles/lists/recent
   def recent
     @battles = Battle.order(created_at: :desc)
-    render json: @battles 
+    render json: @battles
   end
 
   # GET /battles/lists/top
   def top
     @battles = Battle.order(winner_score: :desc).limit(10)
-    render json: @battles 
+    render json: @battles
   end
 
   # GET /battles/:id
