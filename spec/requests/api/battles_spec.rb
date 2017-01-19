@@ -20,14 +20,29 @@ describe "Battles API" do
       public_gists: 8
     )
 
-    @battle = Battle.create(
+    @player_three = Player.create(
+      login: "heidipowers",
+      avatar_url: "some_img.jpg",
+      followers: 8,
+      following: 2,
+      public_repos: 37,
+      public_gists: 10000
+    )
+
+    @battle_one = Battle.create(
       winner_score: 10,
       loser_score: 1,
       winner_id: @player_one.id,
       loser_id: @player_two.id
     )
-  end
 
+    @battle_two = Battle.create(
+      winner_score: 299,
+      loser_score: 7,
+      winner_id: @player_one.id,
+      loser_id: @player_three.id
+    )
+  end
   describe "GET /battles" do
     it "returns a 200 OK" do
       get "/api/v1/battles"
@@ -69,6 +84,34 @@ describe "Battles API" do
       end
     end
   end
+
+  describe "GET /battles/lists/recent" do
+    it "returns a 200 OK" do
+      battles = Battle.all
+      
+      get "/api/v1/battles/lists/recent" 
+      expect(response).to be_success
+    end
+
+    it "responds with recent battle data" do
+     get "/api/v1/battles/lists/recent"
+     data = JSON.parse(response.body)
+
+     expect(data).to_not be_empty
+
+     data.each do |battle|
+       expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
+     end
+    end
+
+    it "responds with list in order of newest" do
+     get "/api/v1/battles/lists/recent"
+     data = JSON.parse(response.body)
+     correct_order = data.first["created_at"] > data.last["created_at"]
+     expect(correct_order).to be(true)
+    end
+  end
+
 
   describe "POST /battles/" do
     context "when information is provided correctly"

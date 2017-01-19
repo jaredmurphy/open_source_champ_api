@@ -8,6 +8,12 @@ class Api::V1::BattlesController < ApplicationController
     render json: @battles
   end
 
+  # GET /battles/recent
+  def recent
+    @battles = Battle.order(created_at: :desc)
+    render json: @battles 
+  end
+
   # GET /battles/:id
   def show
     @battle = Battle.find_by(id: params[:id])

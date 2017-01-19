@@ -12,11 +12,11 @@ Rails.application.routes.draw do
         get '/players/:id', to: 'players#show'
         put '/players/:id', to: 'players#update'
         post '/players/', to: 'players#create'
-
         get '/search', to: 'players#search'
 
         #battles
         resources :battles, only: [:index, :show, :new, :create]
+        get '/battles/lists/recent', to: 'battles#recent'
       end
     end
 end
