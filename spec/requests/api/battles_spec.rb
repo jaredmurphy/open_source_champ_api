@@ -112,6 +112,32 @@ describe "Battles API" do
     end
   end
 
+  describe "GET /battles/lists/top" do
+    it "returns a 200 OK" do
+      get "/api/v1/battles/lists/top"
+      expect(response).to be_success
+    end
+
+    it "responds with recent battle data" do
+     get "/api/v1/battles/lists/top"
+     data = JSON.parse(response.body)
+
+     expect(data).to_not be_empty
+
+     data.each do |battle|
+       expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
+     end
+    end
+
+    it "responds with list in order of winner_score" do
+     get "/api/v1/battles/lists/top"
+     data = JSON.parse(response.body)
+
+     correct_order = data.first["winner_score"] > data.last["winner_score"]
+     expect(correct_order).to be(true)
+    end
+
+  end
 
   describe "POST /battles/" do
     context "when information is provided correctly"

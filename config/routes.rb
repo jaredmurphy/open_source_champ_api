@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         #battles
         resources :battles, only: [:index, :show, :new, :create]
         get '/battles/lists/recent', to: 'battles#recent'
+        get '/battles/lists/top', to: 'battles#top'
       end
     end
 end
