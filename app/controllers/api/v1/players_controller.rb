@@ -1,4 +1,5 @@
 class Api::V1::PlayersController < ApplicationController
+  skip_before_action :verify_authenticity_token
   wrap_parameters format: [:json]
 
   # GET /players
