@@ -1,7 +1,8 @@
 class Api::V1::BattlesController < ApplicationController
   #skip_before_action :verify_authenticity_token, if: :json_request?
   protect_from_forgery with: :null_session
-  skip_before_filter  :verify_authenticity_token
+  # skip_before_filter  :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token, :only => [:create]
   wrap_parameters format: [:json]
 
   # GET /battles
