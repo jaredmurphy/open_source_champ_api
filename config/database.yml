@@ -2,7 +2,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: open-source-chamption-api_development
+  database: open-source-champion-api_development
   pool: 5
   username: jared
   password:
@@ -11,7 +11,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: open-source-chamption-api_test
+  database: open-source-champion-api_test
   pool: 5
   username: jared
   password:
