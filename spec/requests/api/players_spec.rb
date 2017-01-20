@@ -59,6 +59,24 @@ describe "Players API" do
     end
   end
 
+  describe "GET /players/lists/leaderboard" do
+    it "returns a 200 OK" do
+      get "/api/v1/players/lists/leaderboard"
+      expect(response).to be_success
+    end
+
+    it "responds with players data" do
+      get "/api/v1/players/lists/leaderboard"
+      data = JSON.parse(response.body)
+
+      expect(data).to_not be_empty
+
+      data.each do |player|
+        check_player_keys player
+      end
+    end
+  end
+
 
   describe "PUT /players/:id" do
     context "when user currently exists" do

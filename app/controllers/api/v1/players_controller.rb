@@ -4,18 +4,18 @@ class Api::V1::PlayersController < ApplicationController
 
   # GET /players
   def index
-    @players = Player.all
-    render json: @players
+    players = Player.all
+    render json: players
   end
 
   # GET /players/:id
   def show
-    @player = Player.find_by(id: params[:id])
+    player = Player.find_by(id: params[:id])
 
-    if @player.nil?
+    if player.nil?
       not_found
     else
-      render json: @player
+      render json: player
     end
   end
 
@@ -53,12 +53,18 @@ class Api::V1::PlayersController < ApplicationController
 
   end
 
+  # GET /players/lists/leaderboard
+  def leaderboard
+    players = Player.select('*').joins(:battle)
+    render json: players
+  end
+
   # POST /players
   def create
-    @player = Player.new(player_params)
+    player = Player.new(player_params)
 
-    if @player.save
-      render json: @player, status: :created
+    if player.save
+      render json: player, status: :created
     else
       render json: {:error => "That user already exists", status: :unprocessable_entity}
     end
@@ -66,11 +72,11 @@ class Api::V1::PlayersController < ApplicationController
 
   # PATCH/PUT /players/:id
   def update
-    @player = Player.find_by(id: params[:player][:id])
-    if @player.update(player_params)
-      render json: @player
+    player = Player.find_by(id: params[:player][:id])
+    if player.update(player_params)
+      render json: player
     else
-      render json: @player.errors, status: :unprocessable_entity
+      render json: player.errors, status: :unprocessable_entity
     end
   end
 
