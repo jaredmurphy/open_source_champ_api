@@ -6,7 +6,7 @@ class Api::V1::BattlesController < ApplicationController
   # GET /battles
   def index
     @battles = Battle.all.with_results
-    byebug
+    # @battles = Battle.all => same result
     render json: @battles
   end
 

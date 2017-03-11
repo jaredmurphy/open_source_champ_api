@@ -55,7 +55,7 @@ class Api::V1::PlayersController < ApplicationController
 
   # GET /players/lists/leaderboard
   def leaderboard
-    players = Player.select('*').joins(:battle)
+    players = Player
     render json: players
   end
 
