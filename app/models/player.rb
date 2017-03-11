@@ -4,13 +4,7 @@ class Player < ApplicationRecord
   validates :login, :uniqueness => true
 
   has_many :battles
-
-  scope: top_10, -> { 
-    select("players.*, count(battles.winner_id) AS winners_count").
-    joins(:battles).
-    group("players.id").
-    order("winners_count DESC").
-    limit(10)
- }
+  has_many :wins, -> { where(winner_id: 1) },
+    class_name: "Battle"
 
 end
