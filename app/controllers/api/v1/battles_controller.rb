@@ -24,7 +24,7 @@ class Api::V1::BattlesController < ApplicationController
 
   # GET /battles/:id
   def show
-    @battle = Battle.find_by(id: params[:id])
+    @battle = Battle.find_by(id: params[:id]).with_results
     if @battle.nil?
       not_found
     else
