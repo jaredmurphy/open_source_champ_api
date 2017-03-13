@@ -10,5 +10,7 @@ class Battle < ApplicationRecord
     class_name: "Player",
     foreign_key: "loser_id"
 
-  #scope :with_results, -> { includes(:winner, :loser) }
+  scope :all_results, -> { all.to_json(include: [:winner, :loser]) }
+  scope :find_results, -> (id) { find(id).to_json(include: [:winner, :loser]) }
+
 end

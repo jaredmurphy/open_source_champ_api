@@ -2,9 +2,11 @@ class Api::V1::BattlesController < ApplicationController
   protect_from_forgery with: :null_session
   skip_before_action :verify_authenticity_token, :only => [:create]
   wrap_parameters format: [:json] 
+
+# render json on each method
   # GET /battles
   def index
-    render json: Battle.all.to_json(include: [:winner, :loser])
+    render json: Battle.all_results
   end
 
   # GET /battles/lists/recent
@@ -20,12 +22,11 @@ class Api::V1::BattlesController < ApplicationController
   # GET /battles/:id
   def show
     @battle = Battle.find_by(id: params[:id])    
-    #@battle = Battle.find_by(id: params[:id]).with_results
 
     if @battle.nil?
       not_found
     else
-      render json: @battle.to_json(include: [:winner, :loser])
+      render json: Battle.find_results(params[:id])
     end
   end
 
