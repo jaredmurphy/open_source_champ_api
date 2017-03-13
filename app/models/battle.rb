@@ -10,5 +10,5 @@ class Battle < ApplicationRecord
     class_name: "Player",
     foreign_key: "loser_id"
 
-  scope :with_results, -> { includes(:winner, :loser) }
+  #scope :with_results, -> { includes(:winner, :loser) }
 end

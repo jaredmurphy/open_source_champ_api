@@ -4,31 +4,28 @@ class Api::V1::BattlesController < ApplicationController
   wrap_parameters format: [:json] 
   # GET /battles
   def index
-    @battles = Battle.all.to_json(include: [:winner, :loser])
-    #@battles = Battle.with_results
-    render json: @battles
+    render json: Battle.all.to_json(include: [:winner, :loser])
   end
 
   # GET /battles/lists/recent
   def recent
-    @battles = Battle.order(created_at: :desc)
-    render json: @battles
-  end
+    render json: Battle.order(created_at: :desc)
+  end 
 
   # GET /battles/lists/top
   def top
-    @battles = Battle.order(winner_score: :desc).limit(10)
-    render json: @battles
+    render json: Battle.order(winner_score: :desc).limit(10)
   end
 
   # GET /battles/:id
   def show
-    byebug
-    @battle = Battle.find_by(id: params[:id]).with_results
+    @battle = Battle.find_by(id: params[:id])    
+    #@battle = Battle.find_by(id: params[:id]).with_results
+
     if @battle.nil?
       not_found
     else
-      render json: @battle
+      render json: @battle.to_json(include: [:winner, :loser])
     end
   end
 

@@ -56,7 +56,7 @@ describe "Battles API" do
      expect(data).to_not be_empty
 
      data.each do |battle|
-       expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
+       expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id", "winner", "loser")
      end
     end
   end
@@ -69,18 +69,32 @@ describe "Battles API" do
         get "/api/v1/battles/#{battle.id}"
         expect(response).to be_success
       end
+
+      it "responds with battle data" do
+        battle = Battle.first 
+
+        get "/api/v1/battles/#{battle.id}"
+        data = JSON.parse(response.body)
+
+        expect(data).to_not be_empty
+
+        expect(data.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id", "winner", "loser")
+      end
     end
 
     context "when the id is invalid" do
       it "returns a 404 status" do
-        get "/api/v1/battles/9999999999999"
+        bad_battle_index = Battle.last.id + 1
+        get "/api/v1/battles/#{bad_battle_index}"
         expect(response.status).to eq 404
       end
 
       it "responds with message of Not Found" do
-        get "/api/v1/battles/99999999999999"
+        bad_battle_index = Battle.last.id + 1
+        get "/api/v1/battles/#{bad_battle_index}"
         message = JSON.parse(response.body)["error"]
         expect(message).to eq "Not Found"
+
       end
     end
   end
@@ -98,10 +112,6 @@ describe "Battles API" do
      data = JSON.parse(response.body)
 
      expect(data).to_not be_empty
-
-     data.each do |battle|
-       expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
-     end
     end
 
     it "responds with list in order of newest" do
@@ -124,9 +134,6 @@ describe "Battles API" do
 
      expect(data).to_not be_empty
 
-     data.each do |battle|
-       expect(battle.keys).to contain_exactly("id", "winner_score", "loser_score", "created_at", "updated_at", "winner_id", "loser_id")
-     end
     end
 
     it "responds with list in order of winner_score" do
