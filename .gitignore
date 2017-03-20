@@ -25,3 +25,4 @@
 *.swo
 
 .ruby-version
+.env
