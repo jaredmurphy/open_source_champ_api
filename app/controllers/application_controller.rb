@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def github_client
+    @github_client ||= Github::Client.new
+  end
+
   def parse_request
    @json = JSON.parse(request.body.read)
   end
@@ -13,35 +17,33 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= ApiUser.find(session[:api_user_id]) if session[:api_user_id]
+    return unless session[:api_user_id]
+    @current_user ||= ApiUser.find(session[:api_user_id])
   end
 
-  def hit_github_for_player player
-    root_url = "https://api.github.com/users/"
-    github_id = ENV['GITHUB_ID']
-    github_secret = ENV['GITHUB_SECRET']
-    url = "#{root_url}#{player[:login]}?client_id=#{github_id}&client_secret=#{github_secret}"
-    response = HTTParty.get(url)
+  def generate_winner(player_one, player_two)
+    players = [
+      {
+        player: player_one,
+        score: generate_score(player_one)
+      },
+      {
+        player: player_two,
+        score: generate_score(player_two)
+      }
+    ]
+
+    players.sort_by{ |p| p[:score] }
+
+    { winner: players.first, loser: players.second }
   end
 
-  def generate_winner player_one, player_two
-    player_one_score = generate_score player_one
-    player_two_score = generate_score player_two
+  def generate_score(player)
+    response = github_client.player(player)
 
-    if player_one_score > player_two_score
-        winner = {:player => player_one, :score => player_one_score}
-        loser = {:player => player_two, :score => player_two_score}
-    elsif player_one_score < player_two_score
-        winner = {:player => player_two, :score => player_two_score}
-        loser = {:player => player_one, :score => player_one_score}
-    end
-
-    {:winner => winner, :loser => loser}
+    response["public_repos"]
+      + response["public_gists"]
+      + (response["followers"] * 2)
+      + response["following"]
   end
-
-  def generate_score player
-    response = hit_github_for_player player
-    score = response["public_repos"] + response["public_gists"] + (response["followers"] * 2) + response["following"]
-  end
-
 end

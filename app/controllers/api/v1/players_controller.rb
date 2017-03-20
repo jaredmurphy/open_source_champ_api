@@ -26,7 +26,7 @@ class Api::V1::PlayersController < ApplicationController
     if player
       render json: player
     else
-      response = hit_github_for_player({login: params[:login]})
+      response = github_client.player({login: params[:login]})
 
       if response["message"] && response["message"] == "Not Found"
         not_found
@@ -66,7 +66,10 @@ class Api::V1::PlayersController < ApplicationController
     if player.save
       render json: player, status: :created
     else
-      render json: {:error => "That user already exists", status: :unprocessable_entity}
+      render json: {
+        error: "That user already exists",
+        status: :unprocessable_entity
+      }
     end
   end
 
@@ -83,6 +86,10 @@ class Api::V1::PlayersController < ApplicationController
   private
     # Only allow a trusted parameter "white list" through.
     def player_params
-      params.require(:player).permit(:github_id, :login, :avatar_url, :blog, :github_created_at, :followers, :following, :public_repos, :public_gists, :location, :company)
+      params
+        .require(:player)
+        .permit(:github_id, :login, :avatar_url, :blog, :github_created_at,
+                :followers, :following, :public_repos, :public_gists,
+                :location, :company)
     end
 end
