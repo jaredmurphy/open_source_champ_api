@@ -4,7 +4,6 @@ development:
   encoding: unicode
   database: open-source-champion-api_development
   pool: 5
-  username: jared
   password:
   timeout: 5000
 
@@ -13,6 +12,5 @@ test:
   encoding: unicode
   database: open-source-champion-api_test
   pool: 5
-  username: jared
   password:
   timeout: 5000

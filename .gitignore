@@ -23,3 +23,6 @@
 # Vim swaps
 *.swp
 *.swo
+
+.ruby-version
+.env
