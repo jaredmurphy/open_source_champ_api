@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
 
   def generate_score(player)
     response = github_client.player(player)
-    score = response["public_repos"] + 
+    response["public_repos"] + 
       response["public_gists"] + 
       (response["followers"] * 2) + 
       response["following"]
