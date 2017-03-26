@@ -2,16 +2,12 @@ class Api::V1::PlayersController < ApplicationController
   skip_before_action :verify_authenticity_token
   wrap_parameters format: [:json]
 
-  # GET /players
   def index
-    players = Player.all
-    render json: players
+    render json: Player.all
   end
 
-  # GET /players/:id
   def show
     player = Player.find_by(id: params[:id])
-
     if player.nil?
       not_found
     else
@@ -19,19 +15,25 @@ class Api::V1::PlayersController < ApplicationController
     end
   end
 
-  # GET /search?login=
   def search
     player= Player.find_by(:login => params[:login])
-
     if player
       render json: player
     else
       response = github_client.player({login: params[:login]})
-
-      if response["message"] && response["message"] == "Not Found"
+      if response["message"] == "Not Found"
         not_found
       else
-        create_player = Player.create(
+        create_player(response)
+        new_player = Player.find_by :login => response["login"]
+        render json: new_player, status: :created
+      end
+    end
+  end
+
+  private
+    def create_player(response)
+      Player.create(
           :login => response["login"],
           :avatar_url => response["avatar_url"],
           :blog => response["blog"],
@@ -45,51 +47,5 @@ class Api::V1::PlayersController < ApplicationController
           :kind => response["type"],
           :github_id => response["id"]
         )
-
-        new_player = Player.find_by :login => response["login"]
-        render json: new_player, status: :created
-      end
-    end
-
-  end
-
-  # GET /players/lists/leaderboard
-  def leaderboard
-    players = Player.all
-    render json: players
-  end
-
-  # POST /players
-  def create
-    player = Player.new(player_params)
-
-    if player.save
-      render json: player, status: :created
-    else
-      render json: {
-        error: "That user already exists",
-        status: :unprocessable_entity
-      }
-    end
-  end
-
-  # PATCH/PUT /players/:id
-  def update
-    player = Player.find_by(id: params[:player][:id])
-    if player.update(player_params)
-      render json: player
-    else
-      render json: player.errors, status: :unprocessable_entity
-    end
-  end
-
-  private
-    # Only allow a trusted parameter "white list" through.
-    def player_params
-      params
-        .require(:player)
-        .permit(:github_id, :login, :avatar_url, :blog, :github_created_at,
-                :followers, :following, :public_repos, :public_gists,
-                :location, :company)
     end
 end

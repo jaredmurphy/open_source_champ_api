@@ -33,9 +33,8 @@ class ApplicationController < ActionController::Base
       }
     ]
 
-    players.sort_by{ |p| p[:score] }
-
-    { winner: players.first, loser: players.second }
+    sorted_p = players.sort_by{ |p| p[:score] }.reverse
+    { winner: sorted_p.first, loser: sorted_p.second }
   end
 
   def generate_score(player)

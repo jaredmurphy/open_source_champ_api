@@ -3,23 +3,18 @@ class Api::V1::BattlesController < ApplicationController
   skip_before_action :verify_authenticity_token, :only => [:create]
   wrap_parameters format: [:json] 
 
-# render json on each method
-  # GET /battles
   def index
     render json: Battle.all_results
   end
 
-  # GET /battles/lists/recent
   def recent
     render json: Battle.order(created_at: :desc)
   end 
 
-  # GET /battles/lists/top
   def top
     render json: Battle.order(winner_score: :desc).limit(10)
   end
 
-  # GET /battles/:id
   def show
     @battle = Battle.find_by(id: params[:id])    
 
@@ -30,7 +25,6 @@ class Api::V1::BattlesController < ApplicationController
     end
   end
 
-  # POST /battles
   def create
     player_one = Player.find(params[:players][:player_one])
     player_two = Player.find(params[:players][:player_two])
@@ -52,13 +46,7 @@ class Api::V1::BattlesController < ApplicationController
   end
 
   private
-    # Only allow a trusted parameter "white list" through.
     def battle_params
       params.require(:players).permit(:player_one, :player_two)
     end
-
-    # verify json request
-    def json_request?
-    request.format.json?
-  end
 end
