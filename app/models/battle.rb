@@ -12,5 +12,7 @@ class Battle < ApplicationRecord
 
   scope :all_results, -> { all.to_json(include: [:winner, :loser]) }
   scope :find_results, -> (id) { find(id).to_json(include: [:winner, :loser]) }
-
+  scope :desc, -> { order(created_at: :desc) }
+  scope :recent, -> { all.to_json(include: [:winner, :loser]) }
+  scope :top, -> { all.limit(20).uniq! {|b| b[:winner_id]}.to_json(include: [:winner, :loser]) }
 end

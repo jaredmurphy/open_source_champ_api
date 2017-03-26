@@ -8,11 +8,11 @@ class Api::V1::BattlesController < ApplicationController
   end
 
   def recent
-    render json: Battle.order(created_at: :desc)
+    render json: Battle.desc.recent
   end 
 
   def top
-    render json: Battle.order(winner_score: :desc).limit(10)
+    render json: Battle.desc.top
   end
 
   def show
